@@ -240,7 +240,7 @@ static stock void InitWeaponInfoTrie()
 		}
 		
 		delete kvItems;
-		delete kvPrefabs
+		delete kvPrefabs;
 	}
 }
 
@@ -254,7 +254,12 @@ static stock void addWeaponFromItems(KeyValues kvItems, KeyValues kvPrefabs)
 		char szClassname[128];
 		char szPrefab[128];
 
-		if(!iDefIndex || !kvItems.GetString("name", szClassname, sizeof(szClassname)) || (StrContains(szClassname, "weapon_") == -1 && StrContains(szClassname, "item_") == -1) || !kvItems.GetString("prefab", szPrefab, sizeof(szPrefab)))
+		// KeyValues.GetString() is void (SM 1.13 rejects using its result); the native
+		// always returned 1, so the old "!GetString()" checks never returned early.
+		kvItems.GetString("name", szClassname, sizeof(szClassname));
+		kvItems.GetString("prefab", szPrefab, sizeof(szPrefab));
+
+		if(!iDefIndex || (StrContains(szClassname, "weapon_") == -1 && StrContains(szClassname, "item_") == -1))
 			return;
 
 		WeaponType iItemType;
@@ -275,8 +280,8 @@ static stock void addWeaponFromItems(KeyValues kvItems, KeyValues kvPrefabs)
 
 		if(kvItems.JumpToKey("used_by_classes"))
 		{
-			int iTerroroists = kvItems.GetNum("terrorists", -1)
-			int iCounterTerroroists = kvItems.GetNum("counter-terrorists", -1)
+			int iTerroroists = kvItems.GetNum("terrorists", -1);
+			int iCounterTerroroists = kvItems.GetNum("counter-terrorists", -1);
 			iBuyTeam = (iTerroroists == 1 && iCounterTerroroists == 1) ? BOTH_TEAMS : iTerroroists == 1 ? TERROR_TEAM : iCounterTerroroists == 1 ? CT_TEAM : BOTH_TEAMS;
 			kvItems.GoBack();
 		}
@@ -284,8 +289,8 @@ static stock void addWeaponFromItems(KeyValues kvItems, KeyValues kvPrefabs)
 		{
 			if(kvPrefabs.JumpToKey("used_by_classes"))
 			{
-				int iTerroroists = kvPrefabs.GetNum("terrorists", -1)
-				int iCounterTerroroists = kvPrefabs.GetNum("counter-terrorists", -1)
+				int iTerroroists = kvPrefabs.GetNum("terrorists", -1);
+				int iCounterTerroroists = kvPrefabs.GetNum("counter-terrorists", -1);
 				iBuyTeam = (iTerroroists == 1 && iCounterTerroroists == 1) ? BOTH_TEAMS : iTerroroists == 1 ? TERROR_TEAM : iCounterTerroroists == 1 ? CT_TEAM : BOTH_TEAMS;
 				kvPrefabs.GoBack();
 			}

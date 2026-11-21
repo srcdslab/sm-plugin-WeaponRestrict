@@ -1,12 +1,12 @@
+#pragma semicolon 1
+#pragma newdecls required
+
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
 #include <cstrike>
-
-#pragma newdecls required;
 #include <cstrike_weapons>
 #include <restrict>
-#pragma semicolon 1
 
 #define WARMUP
 #define CONFIGLOADER
@@ -18,7 +18,7 @@
 #include <adminmenu>
 #endif
 
-#define PLUGIN_VERSION "4.2.0"
+#define PLUGIN_VERSION "4.2.1-srcdslab"
 #define ADMINCOMMANDTAG "\x01[\x04SM\x01]\x04 "
 #define MAXWEAPONGROUPS 7
 
@@ -65,8 +65,8 @@ public Plugin myinfo =
 	author = "Dr!fter",
 	description = "CS:S & CS:GO Weapon restrict",
 	version = PLUGIN_VERSION,
-	url = "https://forums.alliedmods.net"
-}
+	url = "https://github.com/srcdslab/sm-plugin-WeaponRestrict"
+};
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char [] error, int err_max)
 {
